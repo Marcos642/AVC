@@ -1,11 +1,10 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
 import matplotlib
 matplotlib.use('Agg')  # Define o backend como 'Agg'
 import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
 
 def load_data():
     # Carrega o dataset de AVC
@@ -20,14 +19,14 @@ def train_model(df):
     # Divide os dados em treino e teste
     X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 
-    # Treina o modelo Random Forest
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    # Treina o modelo KNN
+    model = KNeighborsClassifier(n_neighbors=10)  # Aumente o número de vizinhos
     model.fit(X_train, y_train)
 
     # Avalia o modelo
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    print(f'Acurácia do modelo: {accuracy:.2f}')
+    print(f'Acurácia do modelo KNN: {accuracy:.2f}')
 
     return model
 
