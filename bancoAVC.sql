@@ -38,4 +38,3 @@ ADD COLUMN tipo_residencia_id INT,
 ADD CONSTRAINT fk_tipo_trabalho FOREIGN KEY (tipo_trabalho_id) REFERENCES tipos_trabalho(id),
 ADD CONSTRAINT fk_status_fumante FOREIGN KEY (status_fumante_id) REFERENCES status_fumante(id),
 ADD CONSTRAINT fk_tipo_residencia FOREIGN KEY (tipo_residencia_id) REFERENCES tipos_residencia(id);
-

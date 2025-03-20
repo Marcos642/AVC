@@ -1,7 +1,7 @@
 <?php
-require_once 'Controller/TemperaturaController.php';
+require_once 'controllers/AVCController.php';
 
-$controller = new TemperaturaController();
+$controller = new AVCController();
 $action = $_GET['action'] ?? 'prever';
 
 $controller->$action();
