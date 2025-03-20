@@ -1,3 +1,4 @@
+import pandas as pd
 import sqlite3
 
 def create_database():
@@ -21,6 +22,9 @@ def create_database():
     conn.close()
 
 def save_patient(age, hypertension, heart_disease, avg_glucose_level, bmi, stroke):
+    # Certifique-se de que stroke é um inteiro
+    stroke = int(stroke)
+    
     conn = sqlite3.connect('stroke.db')
     cursor = conn.cursor()
     cursor.execute('''
@@ -35,5 +39,33 @@ def get_patients():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM patients')
     patients = cursor.fetchall()
+    
+    # Converte o valor de stroke de bytes para int
+    patients = [
+        (id, age, hypertension, heart_disease, avg_glucose_level, bmi, int.from_bytes(stroke, byteorder='little') if isinstance(stroke, bytes) else int(stroke))
+        for id, age, hypertension, heart_disease, avg_glucose_level, bmi, stroke in patients
+    ]
+    
     conn.close()
     return patients
+
+def load_patients_to_dataframe():
+    conn = sqlite3.connect('stroke.db')
+    df = pd.read_sql_query('SELECT age, hypertension, heart_disease, avg_glucose_level, bmi, stroke FROM patients', conn)
+    conn.close()
+
+    # Certifique-se de que a coluna 'stroke' é do tipo inteiro
+    if not df.empty:
+        df['stroke'] = df['stroke'].apply(lambda x: int.from_bytes(x, byteorder='little') if isinstance(x, bytes) else int(x))
+
+    return df
+
+def clear_database():
+    conn = sqlite3.connect('stroke.db')
+    cursor = conn.cursor()
+
+    # Exclui todos os registros da tabela patients
+    cursor.execute('DELETE FROM patients')
+
+    conn.commit()
+    conn.close()

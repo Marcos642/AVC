@@ -66,6 +66,11 @@
             </tbody>
         </table>
 
+        <!-- Botão para limpar o banco de dados -->
+        <form action="/clear" method="POST" onsubmit="return confirm('Tem certeza que deseja limpar todas as consultas?');">
+            <button type="submit" class="btn btn-danger">Limpar Consultas</button>
+        </form>
+
         <h2 class="mt-5">Gráficos:</h2>
         <div class="row">
             <div class="col-md-6">
