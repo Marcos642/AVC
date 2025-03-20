@@ -1,10 +1,11 @@
 import matplotlib
 matplotlib.use('Agg')  # Define o backend como 'Agg'
 import matplotlib.pyplot as plt
-import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def load_data():
     # Carrega o dataset de AVC
@@ -22,28 +23,21 @@ def train_model(df):
     # Divide os dados em treino e teste
     X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.2, random_state=42)
 
-    # Treina o modelo Random Forest
-    model = RandomForestClassifier(n_estimators=100, random_state=42)
+    # Treina o modelo KNN
+    model = KNeighborsClassifier(n_neighbors=5)  # Número de vizinhos (k) = 5
     model.fit(X_train, y_train)
 
     # Avalia o modelo
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
-    print(f'Acurácia do modelo Random Forest: {accuracy:.2f}')
-
-    # Depuração: Verifique as previsões no conjunto de teste
-    print("Previsões no conjunto de teste:", y_pred)
-    print("Valores reais no conjunto de teste:", y_test.values)
+    print(f'Acurácia do modelo KNN: {accuracy:.2f}')
 
     return model
-
 
 def predict_stroke(model, age, hypertension, heart_disease, avg_glucose_level, bmi):
     # Faz a previsão para um novo paciente
     input_data = [[age, hypertension, heart_disease, avg_glucose_level, bmi]]
-    print("Dados de entrada:", input_data)  # Depuração
     prediction = model.predict(input_data)
-    print("Previsão:", prediction)  # Depuração
     return prediction[0]
 
 def generate_graphs(df):
